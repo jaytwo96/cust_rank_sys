@@ -1,19 +1,19 @@
 # Libraries
 import backend_functions
 from pysqlitecipher import sqlitewrapper
-import enum
+from enum import Enum
 import getpass
 import os
 
 # Set enum
-class DBtype(enum):
+class DBtype(Enum):
     dbText = "TEXT" # text / strings
     dbReal = "REAL" # float numbers
     dbInt  = "INT"  # Integer and cash pricing
     dbJSON = "JSON" # JSON Strings LIST — for python list type
     dbBlob = "BLOB" # Binary data
 
-class POStype(enum):
+class POStype(Enum):
     posAdmin = "Admin"      # Can reset user passwords and backup data
     posManager = "Manager"  # Can edit customer data, generate reports
     posCashier = "Cashier"  # Can enroll and lookup customers
