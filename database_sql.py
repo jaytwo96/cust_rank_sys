@@ -4,44 +4,7 @@ from pysqlitecipher import sqlitewrapper
 from enum import Enum
 import getpass
 import os
-
-# Set enum
-class DBtype(Enum):
-    dbText = "TEXT" # text / strings
-    dbReal = "REAL" # float numbers
-    dbInt  = "INT"  # Integer and cash pricing
-    dbJSON = "JSON" # JSON Strings LIST — for python list type
-    dbBlob = "BLOB" # Binary data
-
-class POStype(Enum):
-    posAdmin = "Admin"      # Can reset user passwords and backup data
-    posManager = "Manager"  # Can edit customer data, generate reports
-    posCashier = "Cashier"  # Can enroll and lookup customers
-
-# make the object
-
-# TODO Move these to global python file
-# Global Variables
-cust_datapath = "loyalty.db"
-cust_table    = "customer_table"
-user_table    = "user_table"
-
-# Customer List
-cust_col_list = [
-        ["rollno", "INT"],
-        ["name", DBtype.dbText],
-    ]
-
-cust_test_list = [1, "John Appleseed"]
-
-# User List
-user_col_list = [
-        ["username", DBtype.dbText],
-        ["password_sha", DBtype.dbText],
-        ["position", DBtype.dbText],
-    ]
-
-user_test_list = ["admin", "Server password", POStype.posAdmin]
+import configs
 
 # Resources
 # https://medium.com/@harshnative/encrypting-sqlite-database-in-python-using-pysqlitecipher-module-23b80129fda0
@@ -50,25 +13,23 @@ user_test_list = ["admin", "Server password", POStype.posAdmin]
 def testcases():
 
     # Set variables for run
-    password = "123456"
-    database_file_path = "test.db"
-    table_name = "lookupTable"
+    database_file_path = configs.test_database_file_path
+    table_name = configs.cust_table
 
     # Data to be added
-    col_list = [
-        ["rollno", "INT"],
-        ["name", DBtype.dbText],
-    ]
+    col_list = configs.cust_col_list
 
-    check_col_list = ['ID', 'rollno', 'name']
-    insert_list = [1, "john"]
-    new_name = "jacob"
-    update_list = [1, new_name]
+    insert_list = configs.cust_test_list.copy()
+    update_list = configs.cust_test_list.copy()
+    new_name = "Jamerson"
+    update_list[1] = new_name
 
     # Delete old and create new database
     if os.path.exists(database_file_path):
         os.remove(database_file_path)
-    obj = sqlitewrapper.SqliteCipher(dataBasePath=database_file_path, checkSameThread=False, password=password)
+
+    obj = sqlitewrapper.SqliteCipher(dataBasePath=database_file_path, checkSameThread=False,
+                                     password=configs.test_password)
 
     # Create table for Database
     obj.createTable(table_name, col_list, makeSecure=True, commit=True)
@@ -79,24 +40,26 @@ def testcases():
     # Retrieve results and check data was imported
     get_col_list, value_list = obj.getDataFromTable(table_name, raiseConversionError=True, omitID=False)
 
-    if not( get_col_list == check_col_list):
+    if not( get_col_list[1:] == configs.check_cust_col_list):
         print("Failed to add table cols")
         return -1
 
-    insert_list = [[0, 1, 'john']]
-    if not( value_list == insert_list):
+    check_value_list = copy_cut_sublist(value_list)
+    if not( check_value_list == insert_list):
         print("Failed to add data row")
         return -1
 
     # Check update data
-    obj.updateInTable(table_name, 0, "name", new_name, commit=True, raiseError=True)
+    obj.updateInTable(table_name, 0, "lastname", new_name, commit=True, raiseError=True)
     check_col_list, value_list = obj.getDataFromTable(table_name, raiseConversionError=True, omitID=False)
 
     # Return without first column
-    some_val = copy_cut_sublist(value_list)
-    if not( some_val == update_list):
+    check_value_list = copy_cut_sublist(value_list)
+    if not( check_value_list == update_list):
         print("Failed to update data")
         return -1
+
+    # Todo add user table
 
     # obj.deleteDataInTable(table_name, row_num, commit=True, raiseError=True, updateId=True)
 
