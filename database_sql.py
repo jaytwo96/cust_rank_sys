@@ -1,8 +1,6 @@
 # Libraries
-import backend_functions
 from pysqlitecipher import sqlitewrapper
-from enum import Enum
-import getpass
+import getpass  # FIXME add a security module
 import os
 import configs
 
@@ -18,7 +16,6 @@ def testcases():
 
     # Data to be added
     col_list = configs.cust_col_list
-
     insert_list = configs.cust_test_list.copy()
     update_list = configs.cust_test_list.copy()
     new_name = "Jamerson"
@@ -28,10 +25,11 @@ def testcases():
     if os.path.exists(database_file_path):
         os.remove(database_file_path)
 
+    # Use this to create object for interacting with database
     obj = sqlitewrapper.SqliteCipher(dataBasePath=database_file_path, checkSameThread=False,
                                      password=configs.test_password)
 
-    # Create table for Database
+    # Create table for database
     obj.createTable(table_name, col_list, makeSecure=True, commit=True)
 
     # Add data to data table
@@ -59,11 +57,22 @@ def testcases():
         print("Failed to update data")
         return -1
 
+    # Todo add 2nd user
+    obj.insertIntoTable(table_name, configs.second_acct, commit=True)
+    check_col_list, value_list = obj.getDataFromTable(table_name, raiseConversionError=True, omitID=False)
+
+    # Check new table
+
+    # Example: Use this to create object for interacting with database
+    new_obj = sqlitewrapper.SqliteCipher(dataBasePath=database_file_path, checkSameThread=False,
+                                     password=configs.test_password)
+
+    check_col_list, value_list = new_obj.getDataFromTable(table_name, raiseConversionError=True, omitID=False)
+
     # Todo add user table
 
+    # Todo future function support, not needed for rollout
     # obj.deleteDataInTable(table_name, row_num, commit=True, raiseError=True, updateId=True)
-
-    # obj.updateInTable(tableName , iDValue , colName , colValue , commit = True , raiseError = True)
     # obj.changePassword(newPass)
 
     print("Passed all tests!")
@@ -74,6 +83,7 @@ def print_example(x):
     print(f'My favorite number is {x}')    # Example of f-string
     return 0
 
+# todo ask for default user city, state, zip code
 def create_customer_database():
 
     # Initialize variables
@@ -94,40 +104,40 @@ def create_customer_database():
         i = i + 1
 
     # TODO Rename old file
-    if os.path.exists(cust_datapath):
+    if os.path.exists(configs.cust_datapath):
         date_time = "2025_05_26"
-        os.rename(cust_datapath, cust_datapath+date_time+".bak")
-        os.remove(cust_datapath)
+        os.rename(configs.cust_datapath, configs.cust_datapath+date_time+".bak")
+        os.remove(configs.cust_datapath)
 
     # Create database
-    obj = sqlitewrapper.SqliteCipher(dataBasePath=cust_datapath, checkSameThread=False, password=password)
+    obj = sqlitewrapper.SqliteCipher(dataBasePath=configs.cust_datapath, checkSameThread=False, password=password)
 
     # Create Table for customers
-    obj.createTable(cust_table, cust_col_list, makeSecure=True, commit=True)
+    obj.createTable(configs.cust_table, configs.cust_col_list, makeSecure=True, commit=True)
 
     # Add test customer
-    obj.insertIntoTable(cust_table, cust_test_list, commit=True)
+    obj.insertIntoTable(configs.cust_table, configs.cust_test_list, commit=True)
 
     # Check test customer
-    get_col_list, value_list = obj.getDataFromTable(cust_table, raiseConversionError=True, omitID=False)
+    get_col_list, value_list = obj.getDataFromTable(configs.cust_table, raiseConversionError=True, omitID=False)
     # Return without first column
     test_case_list = copy_cut_sublist(value_list)
-    if not (test_case_list == cust_test_list):
+    if not (test_case_list == configs.cust_test_list):
         print("Failed to add test user to datatable")
         return -1
 
     # Create Table for users
-    obj.createTable(user_table, user_col_list, makeSecure=True, commit=True)
+    obj.createTable(configs.user_table, configs.user_col_list, makeSecure=True, commit=True)
 
     # Add admin account
     # TODO Add encoded password here
-    obj.insertIntoTable(user_table, user_test_list, commit=True)
+    obj.insertIntoTable(configs.user_table, configs.user_test_list, commit=True)
 
     # Check test customer
-    get_col_list, value_list = obj.getDataFromTable(user_table, raiseConversionError=True, omitID=False)
+    get_col_list, value_list = obj.getDataFromTable(configs.user_table, raiseConversionError=True, omitID=False)
     # Return without first column
     test_case_list = copy_cut_sublist(value_list)
-    if not (test_case_list == cust_test_list):
+    if not (test_case_list == configs.cust_test_list):
         print("Failed to add test user to datatable")
         return -1
 
