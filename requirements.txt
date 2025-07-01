@@ -1,0 +1,1 @@
+pysqlitecipher==0.11
