@@ -1,5 +1,8 @@
 # Libraries
 import backend_functions
+import configs
+from pysqlitecipher import sqlitewrapper
+
 
 # Global Variables
 golden_number = 42
@@ -9,17 +12,19 @@ golden_number = 42
 
 # Calls top level
 def main():
-    # Call top level functions
-    print_example(golden_number)
+    # Set variables for run
+    database_file_path = configs.test_database_file_path
+    table_name = configs.cust_table
 
-    # Create class object and use class function
-    created_object = Person("Joe", 82)
-    created_object.myfunc()
+    new_obj = sqlitewrapper.SqliteCipher(dataBasePath=database_file_path, checkSameThread=False,
+                                     password=configs.test_password)
 
-    # Call function from other python file
-    name_response = backend_functions.name_checker(created_object.name)
-    print(name_response)
-    # print(backend_functions.name_checker(created_object.name))
+    check_col_list, value_list = new_obj.getDataFromTable(table_name, raiseConversionError=True, omitID=False)
+    #check_value_list = copy_cut_sublist(value_list)
+    phoneindex = get_list_index(check_col_list, "phone")
+    loyaltyindex = get_list_index(check_col_list, "loyaltynum")
+    #Todo search loyalty number or phone number within list of lists
+
 
     return 0
 
@@ -39,6 +44,38 @@ class Person:
   # Functions that can be called from object
   def myfunc(self):
     print("Hello my name is " + self.name)
+
+def copy_cut_sublist(full_list):
+    temp_list = []
+    for i in full_list:
+        for j in i:
+            temp_list.append(j)
+        ret_list = temp_list[1:]
+        return ret_list
+
+    return -1
+
+def get_list_index(full_list, searchtext):
+    i = 0
+    for textfield in full_list:
+        if textfield == searchtext:
+            return i
+
+        i += 1
+
+
+    return -1
+#Output: customer list information
+#Input example:check val list, "555-555-5555", phoneindex (5)
+def lookup_lists_of_lists(full_list, searchtext, listindex):
+    for checklist in full_list:
+        for textfield in checklist:
+            temp_list.append(j)
+        ret_list = temp_list[1:]
+        return ret_list
+
+    return -1
+
 
 # Calls main function
 if __name__ == '__main__':
