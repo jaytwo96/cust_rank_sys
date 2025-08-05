@@ -24,7 +24,8 @@ def main():
     phoneindex = get_list_index(check_col_list, "phone")
     loyaltyindex = get_list_index(check_col_list, "loyaltynum")
     custlistindex = lookup_lists_of_lists(value_list, "5557654321", phoneindex)
-
+    #Lookup loyalty number
+    #Handle no number found
     #Todo search loyalty number or phone number within list of lists
 
 
@@ -73,15 +74,13 @@ def get_list_index(full_list, searchtext):
 #Input example:check val list, "555-555-5555", phoneindex (5)
 def lookup_lists_of_lists(full_list, searchtext, listindex):
     for checklist in full_list:
+        ccounter = 0
         for textfield in checklist:
-            #add column counter
-            #if textfield == searchtext
-            #return checklist
-            pass #temp_list.append(j)
+            if ccounter == listindex:
+                if searchtext == textfield:
+                    return checklist
 
-        #ret_list = temp_list[1:]
-        #return ret_list
-
+            ccounter += 1
     return -1
 
 
