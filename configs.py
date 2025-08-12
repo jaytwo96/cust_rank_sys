@@ -39,6 +39,7 @@ check_cust_col_list = ['firstname', 'lastname', 'address', 'lastcompany', 'phone
 
 cust_test_list = ["John", "Appleseed", "123 Main St", "Good Business", "5551234567", "12345678" ]
 second_acct = ["Jane", "Doe", "789 6th St", "Better Business", "5557654321", "87654321" ]
+first_acct = ["John", "Jamerson", "123 Main St", "Good Business", "5551234567", "12345678" ]
 
 # User List
 user_col_list = [
