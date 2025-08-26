@@ -3,15 +3,8 @@ import backend_functions
 import configs
 from pysqlitecipher import sqlitewrapper
 
-
-# Global Variables
-golden_number = 42
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 # Calls top level
-def main():
+def testcases():
     # Set variables for run
     database_file_path = configs.test_database_file_path
     table_name = configs.cust_table
@@ -37,36 +30,7 @@ def main():
         print("Loyalty lookup Failed")
         return -1
 
-
     return 0
-
-
-# Smaller top level functions or classes are defined here
-
-# Function for doing actions or calcs
-def print_example(x):
-    print(f'My favorite number is {x}')    # Example of f-string
-    return 0
-
-# class for creating objects
-class Person:
-  def __init__(self, name, age):
-    self.name = name
-    self.age = age
-
-  # Functions that can be called from object
-  def myfunc(self):
-    print("Hello my name is " + self.name)
-
-def copy_cut_sublist(full_list):
-    temp_list = []
-    for i in full_list:
-        for j in i:
-            temp_list.append(j)
-        ret_list = temp_list[1:]
-        return ret_list
-
-    return -1
 
 def get_list_index(full_list, searchtext):
     i = 0
@@ -75,7 +39,6 @@ def get_list_index(full_list, searchtext):
             return i
 
         i += 1
-
 
     return -1
 
@@ -92,7 +55,6 @@ def lookup_lists_of_lists(full_list, searchtext, listindex):
             ccounter += 1
     return -1
 
-
 # Calls main function
 if __name__ == '__main__':
-    main()
+    testcases()
