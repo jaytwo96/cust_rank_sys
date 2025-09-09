@@ -14,7 +14,8 @@ class POStype(Enum):
     posManager = "Manager"  # Can edit customer data, generate reports
     posCashier = "Cashier"  # Can enroll and lookup customers
 
-# make the object
+# customizable globals
+name_char_limit = 25
 
 # TODO Move these to global python file
 # Global Variables
