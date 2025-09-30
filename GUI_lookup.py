@@ -1,87 +1,50 @@
-# Libraries
-import backend_functions
-import configs
-from pysqlitecipher import sqlitewrapper
 import tkinter as tk
+from tkinter import ttk, messagebox
 
-# Calls top level
-def testcases():
-    # Create the main window (root widget)
-
-
-
-    root = tk.Tk()
-    entry = tk.Entry(root)
-    entry.pack()
-
-    button = tk.Button(root, text="Submit", command=get_input(entry))
-    button.pack()
-
-    root.mainloop()
-
-#Phone Number Verification
-#Check to make sure input is all numbers
-#Check to make sure input is correct number of characters (10)
-#Input will be a string of characters
-#Return a T/F Boolean Value
-
-def phone_verification(phone_number):
-
-    if len(phone_number) == 10:
-
-        if phone_number.isdigit():
-            return True
-        else:
-            print("Make sure the phone number is ALL numbers (no special characters such as - )")
-    else:
-        print("Make sure the phone number is EXACTLY 10 Numbers.")
-
-    return False
-
-def get_input(entry):
+def validate_number():
+    """Check if the entry is a valid number (int)."""
     user_text = entry.get()
-    print(f"User entered: {user_text}")
+    if not user_text.isdigit():
+        messagebox.showerror("Invalid Input", "Please enter a valid number.")
+        return None
+    return user_text
 
+def show_input():
+    """Open a new window with the entered number."""
+    user_text = validate_number()
+    if user_text is None:
+        return
 
-def name_verification(name_str):
+    new_win = tk.Toplevel(root)
+    new_win.title("Output")
 
-    if (len(name_str) < configs.name_char_limit) or (len(name_str) > 1):
-        for char in name_str:
-            if not (char.isalpha()):
-                if char == "-" or char == "'":
-                    pass
-                else:
-                    print("Make sure the name DOES NOT contain any special characters.")
-                    return False
-        return True
-    else:
-        print(f"Make sure the name is between 1 and {configs.name_char_limit} characters")
+    label = ttk.Label(new_win, text=f"You entered the number: {user_text}")
+    label.pack(padx=20, pady=20)
 
-    return False
+def search_input():
+    """Simulate a search with the entered number."""
+    user_text = validate_number()
+    if user_text is None:
+        return
 
-def get_list_index(full_list, searchtext):
-    i = 0
-    for textfield in full_list:
-        if textfield == searchtext:
-            return i
+    new_win = tk.Toplevel(root)
+    new_win.title("Search Result")
 
-        i += 1
+    label = ttk.Label(new_win, text=f"Searching for number: {user_text}...")
+    label.pack(padx=20, pady=20)
+# Main window
+root = tk.Tk()
+root.title("Enter the phone number")
 
-    return -1
+ttk.Label(root, text="Enter a phone number: XXX-XXX-XXXX").pack(padx=10, pady=5)
+entry = ttk.Entry(root, width=30)
+entry.pack(padx=10, pady=5)
 
-#Output: customer list information
-#Input example:check val list, "555-555-5555", phoneindex (5)
-def lookup_lists_of_lists(full_list, searchtext, listindex):
-    for checklist in full_list:
-        ccounter = 0
-        for textfield in checklist:
-            if ccounter == listindex:
-                if searchtext == textfield:
-                    return checklist
+# Buttons in a frame (side by side)
+button_frame = ttk.Frame(root)
+button_frame.pack(pady=10)
 
-            ccounter += 1
-    return -1
+ttk.Button(button_frame, text="Submit", command=show_input).pack(side="left", padx=5)
+ttk.Button(button_frame, text="Search", command=search_input).pack(side="left", padx=5)
 
-# Calls main function
-if __name__ == '__main__':
-    testcases()
+root.mainloop()
