@@ -1,10 +1,13 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+import datainput
 
 def validate_number():
     """Check if the entry is a valid number (int)."""
     user_text = entry.get()
-    if not user_text.isdigit():
+
+
+    if not datainput.phone_verification(user_text):
         messagebox.showerror("Invalid Input", "Please enter a valid number.")
         return None
     return user_text
@@ -27,6 +30,8 @@ def search_input():
     if user_text is None:
         return
 
+    #todo Add lookup function
+
     new_win = tk.Toplevel(root)
     new_win.title("Search Result")
 
@@ -36,7 +41,7 @@ def search_input():
 root = tk.Tk()
 root.title("Enter the phone number")
 
-ttk.Label(root, text="Enter a phone number: XXX-XXX-XXXX").pack(padx=10, pady=5)
+ttk.Label(root, text="Enter a phone number (Numbers Only): ex: 1234567890").pack(padx=10, pady=5)
 entry = ttk.Entry(root, width=30)
 entry.pack(padx=10, pady=5)
 
@@ -44,7 +49,7 @@ entry.pack(padx=10, pady=5)
 button_frame = ttk.Frame(root)
 button_frame.pack(pady=10)
 
-ttk.Button(button_frame, text="Submit", command=show_input).pack(side="left", padx=5)
+#ttk.Button(button_frame, text="Submit", command=show_input).pack(side="left", padx=5)
 ttk.Button(button_frame, text="Search", command=search_input).pack(side="left", padx=5)
 
 root.mainloop()
