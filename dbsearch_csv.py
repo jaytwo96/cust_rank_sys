@@ -23,10 +23,28 @@ def testcases():
     #Todo search loyalty number or phone number within list of lists
 
     file_path = r"C:\Users\jaytw\Documents\Database\database.csv"
+    listoflistscustomer = []
 
     with open(file_path, 'r') as file:
         for line in file:
             print(line.strip())
+            buildlist = []
+            buildstring = ""
+            for letter in line:
+                if letter == ",":
+                    buildlist.append(buildstring)
+                    buildstring = ""
+                else:
+                    buildstring = buildstring + letter
+
+            buildstring = buildstring.strip()
+            buildlist.append(buildstring)
+            print (buildstring)
+            listoflistscustomer.append(buildlist)
+            some_variable = line[0]
+            some_variable2 = line[1]
+
+
     #'5187955229,Josh,170 George St Green Island New York 12183\n'
     #strip gets rid of \n
     #Figure out how to separate one string into a list.
