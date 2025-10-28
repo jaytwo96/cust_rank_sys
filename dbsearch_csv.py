@@ -22,28 +22,12 @@ def testcases():
     #Handle no number found
     #Todo search loyalty number or phone number within list of lists
 
-    file_path = r"C:\Users\jaytw\Documents\Database\database.csv"
+    file_path = r"C:\Users\jaytw\Documents\Database\Checkcashing.csv"
     listoflistscustomer = []
+    checkcollist = []
 
-    with open(file_path, 'r') as file:
-        for line in file:
-            print(line.strip())
-            buildlist = []
-            buildstring = ""
-            for letter in line:
-                if letter == ",":
-                    buildlist.append(buildstring)
-                    buildstring = ""
-                else:
-                    buildstring = buildstring + letter
 
-            buildstring = buildstring.strip()
-            buildlist.append(buildstring)
-            print (buildstring)
-            listoflistscustomer.append(buildlist)
-            some_variable = line[0]
-            some_variable2 = line[1]
-
+    csv_import(file_path, listoflistscustomer, checkcollist)
 
     #'5187955229,Josh,170 George St Green Island New York 12183\n'
     #strip gets rid of \n
@@ -82,6 +66,34 @@ def lookup_lists_of_lists(full_list, searchtext, listindex):
 
             ccounter += 1
     return -1
+
+def csv_import(file_path, listoflistscustomer, checkcollist):
+    with open(file_path, 'r') as file:
+        i = 0
+        for line in file:
+            print(line.strip())
+            buildlist = []
+            buildstring = ""
+            for letter in line:
+                if letter == ",":
+                    buildlist.append(buildstring)
+                    buildstring = ""
+                elif (letter == "»") or (letter =="ï") or (letter =="¿"): #Skips the first three weird characters from the file imnport
+                    pass
+
+                else:
+                    buildstring = buildstring + letter
+
+            buildstring = buildstring.strip()
+            buildlist.append(buildstring)
+            print (buildstring)
+
+            if i == 0:
+                checkcollist.append(buildlist)
+            else:
+                listoflistscustomer.append(buildlist)
+
+            i = i + 1
 
 # Calls main function
 if __name__ == '__main__':
