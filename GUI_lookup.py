@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import datainput
+import configs
+import dbsearch_csv
+import dbsearch
 
 def validate_number():
     """Check if the entry is a valid number (int)."""
@@ -30,6 +33,12 @@ def search_input():
     if user_text is None:
         return
 
+    custlistindex = dbsearch.lookup_lists_of_lists(listoflistscustomer, user_text, phoneindex)
+    if custlistindex == -1:
+        messagebox.showerror("Entry Not Found", f"Could not find {user_text} in the database.")
+        return
+    for element in custlistindex:
+        print(element)
     #todo Add lookup function
 
     new_win = tk.Toplevel(root)
@@ -37,6 +46,13 @@ def search_input():
 
     label = ttk.Label(new_win, text=f"Searching for number: {user_text}...")
     label.pack(padx=20, pady=20)
+
+file_path = configs.file_path
+listoflistscustomer = [] #initialize variable
+checkcollist = dbsearch_csv.csv_import(file_path, listoflistscustomer)
+phoneindex = dbsearch.get_list_index(checkcollist, "phone")
+
+
 # Main window
 root = tk.Tk()
 root.title("Enter the phone number")

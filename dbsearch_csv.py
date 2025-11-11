@@ -1,10 +1,12 @@
 # Libraries
 import dbsearch
+import configs
+
 
 # Calls top level
 def testcases():
 
-    file_path = r"C:\Users\jaytw\Documents\Database\Checkcashing.csv"
+    file_path = configs.file_path
     listoflistscustomer = [] #initialize variable
     checkcollist = csv_import(file_path, listoflistscustomer)
     phoneindex = dbsearch.get_list_index(checkcollist, "phone")

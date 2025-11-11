@@ -50,6 +50,7 @@ user_col_list = [
     ]
 
 user_test_list = ["admin", "Server password", POStype.posAdmin]
+file_path = r"C:\Users\jaytw\Documents\Database\Checkcashing.csv"
 
 # Resources
 # https://medium.com/@harshnative/encrypting-sqlite-database-in-python-using-pysqlitecipher-module-23b80129fda0
