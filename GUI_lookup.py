@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, Toplevel
 import datainput
 import configs
 import dbsearch_csv
@@ -37,21 +37,31 @@ def search_input():
     if custlistindex == -1:
         messagebox.showerror("Entry Not Found", f"Could not find {user_text} in the database.")
         return
-    for element in custlistindex:
-        print(element)
-    #todo Add lookup function
+
+    entry.delete(0, tk.END)
 
     new_win = tk.Toplevel(root)
     new_win.title("Search Result")
+    i = 0
 
-    label = ttk.Label(new_win, text=f"Searching for number: {user_text}...")
-    label.pack(padx=20, pady=20)
+    for element in custlistindex:
+        label = ttk.Label(new_win, text=f"{header_array[i]}{element}")
+        label.pack(padx=20, pady=20, anchor=tk.W)
+        i = i + 1
+
+    exit_button = tk.Button(new_win, text="Exit", command=new_win.destroy)
+    exit_button.pack(pady=20)
+    exit_button.focus_set()
+    new_win.bind("<Return>", lambda event: new_win.destroy())
+
+
+
 
 file_path = configs.file_path
 listoflistscustomer = [] #initialize variable
 checkcollist = dbsearch_csv.csv_import(file_path, listoflistscustomer)
 phoneindex = dbsearch.get_list_index(checkcollist, "phone")
-
+header_array = ["Last Name: ", "First Name: ", "Company: ", "Phone Number: "]
 
 # Main window
 root = tk.Tk()
@@ -67,5 +77,5 @@ button_frame.pack(pady=10)
 
 #ttk.Button(button_frame, text="Submit", command=show_input).pack(side="left", padx=5)
 ttk.Button(button_frame, text="Search", command=search_input).pack(side="left", padx=5)
-
+root.bind("<Return>", lambda event: search_input())
 root.mainloop()
