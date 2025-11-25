@@ -1,0 +1,5 @@
+    Rename your .cmd/.bat file to .exe
+    Right click on the *.exe and choose "Pin to taskbar"
+    Rename the batch file back to .cmd/.bat
+    Shift + Right click on the taskbar icon (for the exe) and choose "Properties"
+    Change the reference from *.exe to .cmd/.bat and change the icon as needed

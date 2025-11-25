@@ -1,9 +1,11 @@
+import sys
 import tkinter as tk
 from tkinter import ttk, messagebox, Toplevel
 import datainput
 import configs
 import dbsearch_csv
 import dbsearch
+import os
 
 def validate_number():
     """Check if the entry is a valid number (int)."""
@@ -58,6 +60,11 @@ def search_input():
 
 
 file_path = configs.file_path
+
+if not (os.path.exists(file_path)):
+    messagebox.showerror("Datebase File Not Found", f"Could not find {file_path} in the directory.")
+    sys.exit()
+
 listoflistscustomer = [] #initialize variable
 checkcollist = dbsearch_csv.csv_import(file_path, listoflistscustomer)
 phoneindex = dbsearch.get_list_index(checkcollist, "phone")
